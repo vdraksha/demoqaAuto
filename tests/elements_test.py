@@ -1,9 +1,10 @@
 import time
 from pages.base_page import BasePage
+from conftest import firefox_driver
 
 
 def test(driver):
-    page = BasePage(driver, 'ya.ru')
+    page = BasePage(firefox_driver, 'ya.ru')
     page.open_url()
     time.sleep(3)
 
