@@ -68,4 +68,10 @@ class BasePage:
         """
         self.driver.execute_script('arguments[0].scrollIntoView();', element)
 
+    def click_element(self, element):
+        """Нажимает на указанный элемент.
+        :param element: Указание на место элемента в html-документе(xpath, селектор).
+        """
+        self.driver.execute_script('arguments[0].click();', element)
+
 

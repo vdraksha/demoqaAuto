@@ -8,7 +8,7 @@ def driver():
        Декоратор @pytest.fixture позволяет вызвать драйвер в нужном тесте под именем
        driver.
     """
-    driver = webdriver.Firefox()
+    driver = webdriver.Chrome()
     driver.maximize_window()
     yield driver
     driver.quit()

@@ -23,3 +23,38 @@ class CheckBoxPageLocators:
     CHECKED_ITEMS = (By.CSS_SELECTOR, "svg[class='rct-icon rct-icon-check']")
     TITLE_ITEM = ".//ancestor::span[@class='rct-text']"  # xpath
     OUTPUT_ITEM = (By.CSS_SELECTOR, "span[class='text-success']")
+
+
+class RadioButtonPageLocators:
+    """Хранит локаторы для элементов страницы https://demoqa.com/radio-button
+    """
+    CONTROL_INPUT = (By.CSS_SELECTOR, "div[class^='custom-control'] label")
+    SELECTED_BUTTON_OUTPUT = (By.CSS_SELECTOR, "p span[class='text-success']")
+    YES_RADIO = (By.CSS_SELECTOR, "label[for='yesRadio']")
+    IMP_RADIO = (By.CSS_SELECTOR, "label[for='impressiveRadio']")
+    NO_RADIO = (By.CSS_SELECTOR, "label[for='noRadio']")
+    SUCCESS_TEXT = (By.CSS_SELECTOR, "span[class='text-success']")
+
+
+class WebTablePageLocators:
+    """Хранит локаторы для элементов страницы https://demoqa.com/webtables
+    """
+    ADD_BUTTON = (By.CSS_SELECTOR, "button[id='addNewRecordButton']")
+    PERSON_LIST = (By.CSS_SELECTOR, "div[class='rt-tr-group']")
+    SEARCH_INPUT = (By.CSS_SELECTOR, "input[id='searchBox']")
+    EDIT_BUTTON = (By.CSS_SELECTOR, "span[title='Edit']")
+    DELETE_BUTTON = (By.CSS_SELECTOR, "span[title='Delete']")
+    SELECT_ROW_BUTTON = (By.CSS_SELECTOR, "select[aria-label='rows per page']")
+    ROW_LIST = (By.CSS_SELECTOR, "select[aria-label='rows per page'] option[value]")
+    PREVIOUS_BUTTON = (By.CSS_SELECTOR, "div[class='-previous']")
+    NEXT_BUTTON = (By.CSS_SELECTOR, "div[class='-next']")
+
+    # Registration Form
+    SUBMIT_BUTTON = (By.CSS_SELECTOR, "button[id='submit']")
+    FIRST_NAME_INPUT = (By.CSS_SELECTOR, "input[id='firstName']")
+    LAST_NAME_INPUT = (By.CSS_SELECTOR, "input[id='lastName']")
+    EMAIL_INPUT = (By.CSS_SELECTOR, "input[id='userEmail']")
+    AGE_INPUT = (By.CSS_SELECTOR, "input[id='age']")
+    SALARY_INPUT = (By.CSS_SELECTOR, "input[id='salary']")
+    DEPARTMENT_INPUT = (By.CSS_SELECTOR, "input[id='department']")
+
