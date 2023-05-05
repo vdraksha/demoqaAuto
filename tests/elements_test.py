@@ -154,5 +154,3 @@ class TestElements:
             output_data = web_table_page.collect_table_data(mode='not empty')
             assert output_data == input_data[:10], "Данные на странице и ожидаемые ожидаемые для страницы " \
                                                    "не совпадают"
-
-        """Подумай о расширении отчета в Allure и как этот отчет прикрутить к резюме"""
