@@ -1,4 +1,6 @@
 import pytest
+import allure
+from datetime import datetime
 from selenium import webdriver
 
 
@@ -8,8 +10,12 @@ def driver():
        Декоратор @pytest.fixture позволяет вызвать драйвер в нужном тесте под именем
        driver.
     """
-    driver = webdriver.Chrome()
+    options = webdriver.ChromeOptions()
+    options.set_capability("pageLoadStrategy", "eager")
+    driver = webdriver.Chrome(options=options)
     driver.maximize_window()
     yield driver
+    attach = driver.get_screenshot_as_png()
+    allure.attach(attach, name=f"Screenshot_{datetime.today()}", attachment_type=allure.attachment_type.PNG)
     driver.quit()
 
