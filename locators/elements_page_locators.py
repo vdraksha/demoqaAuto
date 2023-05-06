@@ -58,3 +58,12 @@ class WebTablePageLocators:
     SALARY_INPUT = (By.CSS_SELECTOR, "input[id='salary']")
     DEPARTMENT_INPUT = (By.CSS_SELECTOR, "input[id='department']")
 
+
+class ButtonsPageLocators:
+    """Хранит локаторы для элементов страницы https://demoqa.com/buttons
+    """
+    DOUBLE_CLICK = (By.CSS_SELECTOR, "button[id='doubleClickBtn']")
+    RIGHT_CLICK = (By.CSS_SELECTOR, "button[id='rightClickBtn']")
+    DYNAMIC_CLICK = (By.CSS_SELECTOR, "div[class='mt-4']:nth-child(3) button")
+    LABELS = (By.CSS_SELECTOR, "div p[id]")
+

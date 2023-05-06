@@ -1,6 +1,6 @@
 import allure
 
-from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage
+from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage, ButtonsPage
 
 
 @allure.suite("Elements Page")
@@ -155,4 +155,20 @@ class TestElements:
             assert output_data == input_data[:10], "Данные на странице и ожидаемые ожидаемые для страницы " \
                                                    "не совпадают"
 
-        """Подумай о расширении отчета в Allure и как этот отчет прикрутить к резюме"""
+    @allure.feature("Buttons")
+    class TestButtons:
+        URL = "https://demoqa.com/buttons"
+
+        @allure.title("Тест нажатия кнопок")
+        def test_pressing_buttons(self, driver):
+            buttons_page = ButtonsPage(driver, self.URL)
+            buttons_page.open_url()
+
+            buttons_page.double_click_me()
+            buttons_page.right_click_me()
+            buttons_page.dynamic_click()
+
+            output_data = buttons_page.get_labels()
+
+            assert output_data == ['double', 'right', 'dynamic'], "Не удалось нажать на кнопку"
+

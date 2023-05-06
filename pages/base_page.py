@@ -1,4 +1,5 @@
 import allure
+from selenium.webdriver import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -73,15 +74,34 @@ class BasePage:
     def go_to_element(self, element):
         """Перемещает к указанному элементу на странице.
         arguments[0].scrollIntoView(); - скрипт для перемещения.
-        :param element: Указание на место элемента в html-документе(xpath, селектор).
+        :param element: Принимает ссылку на WebElement.
         """
         self.driver.execute_script('arguments[0].scrollIntoView();', element)
 
     @allure.step("Нажатие на элемент через JS-скрипт")
     def click_element(self, element):
         """Нажимает на указанный элемент.
-        :param element: Указание на место элемента в html-документе(xpath, селектор).
+        :param element: Принимает ссылку на WebElement.
         """
         self.driver.execute_script('arguments[0].click();', element)
 
+    @allure.step('Двойное нажатие на элемент')
+    def double_click(self, element):
+        """Совершает двойное нажатие на элемент.
+        :param element: Принимает ссылку на WebElement.
+        """
+        act = ActionChains(self.driver)
+        act.move_to_element(element)
+        act.double_click(element)
+        act.perform()
+
+    @allure.step('Нажатие правой кнопкой мыши на элемент')
+    def right_click(self, element):
+        """Совершает нажатие правой кнопкой мыши на элемент.
+        :param element: Принимает ссылку на WebElement.
+        """
+        act = ActionChains(self.driver)
+        act.move_to_element(element)
+        act.context_click(element)
+        act.perform()
 

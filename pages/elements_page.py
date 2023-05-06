@@ -3,7 +3,7 @@ import allure
 from selenium.common import TimeoutException, ElementClickInterceptedException
 from generator.generator import generated_person
 from locators.elements_page_locators import TextBoxPageLocators, CheckBoxPageLocators, RadioButtonPageLocators, \
-    WebTablePageLocators
+    WebTablePageLocators, ButtonsPageLocators
 from pages.base_page import BasePage
 
 
@@ -292,6 +292,40 @@ class WebTablePage(BasePage):
             data.append(item)
             count -= 1
         return data
+
+
+class ButtonsPage(BasePage):
+    """Хранит действия для страницы https://demoqa.com/buttons
+    """
+    locators = ButtonsPageLocators()
+
+    @allure.step('Двойное нажатие на кнопку "Double Click Me"')
+    def double_click_me(self):
+        """Дважды нажимает на кнопку 'Double Click Me'
+        """
+        element = self.element_is_visible(self.locators.DOUBLE_CLICK)
+        self.double_click(element)
+
+    @allure.step('Нажатие правой кнопкой мыши на кнопку "Right Click Me"')
+    def right_click_me(self):
+        """Нажимает правой кнопкой мыши на кнопку 'Right Click Me'
+        """
+        element = self.element_is_visible(self.locators.RIGHT_CLICK)
+        self.right_click(element)
+
+    @allure.step('Нажатие на кнопку "Click Me"')
+    def dynamic_click(self):
+        """Нажимает на кнопку 'Click Me'
+        """
+        self.element_is_visible(self.locators.DYNAMIC_CLICK).click()
+
+    @allure.step('Получение списка нажатых кнопок')
+    def get_labels(self):
+        button_list = self.element_are_present(self.locators.LABELS)
+        return [item.text.split()[-2] for item in button_list]
+
+
+
 
 
 
