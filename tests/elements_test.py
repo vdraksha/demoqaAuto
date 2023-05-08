@@ -1,6 +1,8 @@
+import time
+
 import allure
 
-from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage, ButtonsPage
+from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage, ButtonsPage, LinksPage
 
 
 @allure.suite("Elements Page")
@@ -135,7 +137,7 @@ class TestElements:
 
             input_data, output_data = web_table_page.click_all_option_rows()
 
-            assert output_data == input_data, f"Не удалось нажать на '{output_data[len(output_data) - 1]}'"
+            assert output_data == input_data, f"Не удалось нажать на элемент"
 
         @allure.title('Тест выбора перелистывания страницы в WebTable')
         def test_web_table_page_selection(self, driver):
@@ -159,7 +161,7 @@ class TestElements:
     class TestButtons:
         URL = "https://demoqa.com/buttons"
 
-        @allure.title("Тест нажатия кнопок")
+        @allure.title("Тест нажатия кнопок для Buttons")
         def test_pressing_buttons(self, driver):
             buttons_page = ButtonsPage(driver, self.URL)
             buttons_page.open_url()
@@ -171,4 +173,39 @@ class TestElements:
             output_data = buttons_page.get_labels()
 
             assert output_data == ['double', 'right', 'dynamic'], "Не удалось нажать на кнопку"
+
+    @allure.feature("Links")
+    class TestLinks:
+        URL = "https://demoqa.com/links"
+
+        @allure.title("Тест работы ссылок 'Home' для Links")
+        def test_home_links(self, driver):
+            links_page = LinksPage(driver, self.URL)
+            links_page.open_url()
+
+            url, flag = links_page.check_home_link("simple")
+            assert url == "https://demoqa.com/", "Адрес страницы не совпал с ожидаемым"
+            assert flag, "По указанному адресу расположена другая страница"
+
+            links_page.close_current_tab()
+            links_page.switch_to_tab(0)
+
+            url, flag = links_page.check_home_link("dynamic")
+            assert url == "https://demoqa.com/", "Адрес страницы не совпал с ожидаемым"
+            assert flag, "По указанному адресу расположена другая страница"
+
+        @allure.title("Тест работы API запросов для Links")
+        def test_api_links(self, driver):
+            call_list = ["created", "no-content", "moved",
+                         "bad-request", "unauthorized", "forbidden",
+                         "invalid-url"]
+
+            links_page = LinksPage(driver, self.URL)
+            links_page.open_url()
+
+            for call_name in call_list:
+                input_code, output_code = links_page.check_api_link(call_name)
+                assert input_code == output_code, f"Не правильный ответ сервера для {call_name}"
+                links_page.refresh_page()
+
 

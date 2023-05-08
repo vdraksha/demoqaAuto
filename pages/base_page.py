@@ -85,7 +85,7 @@ class BasePage:
         """
         self.driver.execute_script('arguments[0].click();', element)
 
-    @allure.step('Двойное нажатие на элемент')
+    @allure.step("Двойное нажатие на элемент")
     def double_click(self, element):
         """Совершает двойное нажатие на элемент.
         :param element: Принимает ссылку на WebElement.
@@ -95,7 +95,7 @@ class BasePage:
         act.double_click(element)
         act.perform()
 
-    @allure.step('Нажатие правой кнопкой мыши на элемент')
+    @allure.step("Нажатие правой кнопкой мыши на элемент")
     def right_click(self, element):
         """Совершает нажатие правой кнопкой мыши на элемент.
         :param element: Принимает ссылку на WebElement.
@@ -105,3 +105,28 @@ class BasePage:
         act.context_click(element)
         act.perform()
 
+    @allure.step("Переключение на вкладку")
+    def switch_to_tab(self, number):
+        """Переключает на выбранную по индексу вкладку.
+        :param number: Индекс вкладки.
+        """
+        self.driver.switch_to.window(self.driver.window_handles[number])
+
+    @allure.step("Получение адреса текущей страницы")
+    def get_current_url(self):
+        """Получает адрес текущей вкладки.
+        :return: Возвращает адрес.
+        """
+        return self.driver.current_url
+
+    @allure.step("Закрытие текущей вкладки")
+    def close_current_tab(self):
+        """Закрывает текущую вкладку.
+        """
+        self.driver.close()
+
+    @allure.step("Обновление страницы")
+    def refresh_page(self):
+        """Обновляет текущую страницу.
+        """
+        self.driver.refresh()

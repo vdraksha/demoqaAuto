@@ -67,3 +67,14 @@ class ButtonsPageLocators:
     DYNAMIC_CLICK = (By.CSS_SELECTOR, "div[class='mt-4']:nth-child(3) button")
     LABELS = (By.CSS_SELECTOR, "div p[id]")
 
+
+class LinksPageLocators:
+    """Хранит локаторы для элементов страницы https://demoqa.com/links
+    """
+    SIMPLE_LINK = (By.CSS_SELECTOR, "a[id='simpleLink']")
+    DYNAMIC_LINK = (By.CSS_SELECTOR, "a[id='dynamicLink']")
+    BANNER_IMG = (By.CSS_SELECTOR, "img[class='banner-image']")
+    API_LINK = (By.CSS_SELECTOR, "a[id='!replace_this!']")
+    RESPONSE_CODE = (By.CSS_SELECTOR, "p[id='linkResponse'] b:first-child")
+
+

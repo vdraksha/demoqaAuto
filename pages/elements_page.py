@@ -1,9 +1,10 @@
 import random
 import allure
+import requests
 from selenium.common import TimeoutException, ElementClickInterceptedException
 from generator.generator import generated_person
 from locators.elements_page_locators import TextBoxPageLocators, CheckBoxPageLocators, RadioButtonPageLocators, \
-    WebTablePageLocators, ButtonsPageLocators
+    WebTablePageLocators, ButtonsPageLocators, LinksPageLocators
 from pages.base_page import BasePage
 
 
@@ -169,7 +170,8 @@ class WebTablePage(BasePage):
         """
         select_button = self.element_is_visible(self.locators.SELECT_ROW_BUTTON)
         self.go_to_element(select_button)
-        select_button.click()
+        with allure.step("Нажатие на элемент"):
+            select_button.click()
 
     @allure.step("Нажатие на кнопку Next")
     def click_next_button(self):
@@ -200,7 +202,7 @@ class WebTablePage(BasePage):
             try:
                 self.click_rows_selection()
                 output_data.append(item.text)
-                with allure.step("Нажатие на элемент"):
+                with allure.step(f"Нажатие на {output_data[-1]}"):
                     item.click()
             except ElementClickInterceptedException:
                 return [item.text for item in row_list], output_data
@@ -256,7 +258,6 @@ class WebTablePage(BasePage):
         """
         table_list = self.element_are_visible(self.locators.PERSON_LIST)
         data = [item.text.split('\n') for item in table_list]
-
         if mode == 'not empty':
             return [item for item in data if len(item) > 1]
         return data
@@ -323,6 +324,46 @@ class ButtonsPage(BasePage):
     def get_labels(self):
         button_list = self.element_are_present(self.locators.LABELS)
         return [item.text.split()[-2] for item in button_list]
+
+
+class LinksPage(BasePage):
+    """Хранит действия для страницы https://demoqa.com/links
+    """
+    locators = LinksPageLocators()
+
+    @allure.step("Проверка ссылки")
+    def check_home_link(self, key):
+        """Проверяет указанную (key) ссылку - нажимает на неё, получает url и проводит аутентификацию страницы.
+        :param key: Название элемента - указатель на ссылку.
+        :return: Возвращает url открывшейся страницы. True - открылась ожидаемая страницы.
+        """
+        links_dict = {"simple": self.locators.SIMPLE_LINK,
+                      "dynamic": self.locators.DYNAMIC_LINK}
+        with allure.step("Нажатие на ссылку"):
+            self.element_is_visible(links_dict[key]).click()
+        self.switch_to_tab(1)
+        url = self.get_current_url()
+        with allure.step("Аутентификация страницы"):
+            try:
+                self.element_is_visible(self.locators.BANNER_IMG)
+                return url, True
+            except TimeoutException:
+                return url, False
+
+    @allure.step("Проверка API-запроса")
+    def check_api_link(self, call_name):
+        """Забирает со страницы код ожидаемого ответа и отправляет call_name запрос.
+        :param call_name: Название запроса в url запроса.
+        :return: Возвращает ожидаемый и полученный код ответа.
+        """
+        with allure.step(f"Поиск кода ответа для {call_name}"):
+            by, loc = self.locators.API_LINK
+            self.element_is_visible((by, loc.replace('!replace_this!', call_name))).click()
+            response_code = self.element_is_visible(self.locators.RESPONSE_CODE).text
+        with allure.step(f"Отправка запроса для {call_name}"):
+            response = requests.get(f"https://demoqa.com/{call_name}")
+        return int(response_code), response.status_code
+
 
 
 
