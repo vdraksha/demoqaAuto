@@ -78,3 +78,9 @@ class LinksPageLocators:
     RESPONSE_CODE = (By.CSS_SELECTOR, "p[id='linkResponse'] b:first-child")
 
 
+class BrokenLinksPageLocators:
+    """Хранит локаторы для элементов страницы https://demoqa.com/broken
+    """
+    BROKEN_IMG = (By.CSS_SELECTOR, "div[class='col-12 mt-4 col-md-6'] img:nth-child(6)")
+
+

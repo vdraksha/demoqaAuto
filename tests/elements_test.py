@@ -1,8 +1,10 @@
 import time
 
 import allure
+import requests
 
-from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage, ButtonsPage, LinksPage
+from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage, ButtonsPage, LinksPage, \
+    BrokenLinksPage
 
 
 @allure.suite("Elements Page")
@@ -194,7 +196,7 @@ class TestElements:
             assert url == "https://demoqa.com/", "Адрес страницы не совпал с ожидаемым"
             assert flag, "По указанному адресу расположена другая страница"
 
-        @allure.title("Тест работы API запросов для Links")
+        @allure.title("Тест работы API-запросов для Links")
         def test_api_links(self, driver):
             call_list = ["created", "no-content", "moved",
                          "bad-request", "unauthorized", "forbidden",
@@ -207,5 +209,23 @@ class TestElements:
                 input_code, output_code = links_page.check_api_link(call_name)
                 assert input_code == output_code, f"Не правильный ответ сервера для {call_name}"
                 links_page.refresh_page()
+
+    @allure.feature("Broken Links")
+    class TestBrokenLinks:
+        URL = "https://demoqa.com/broken"
+
+        @allure.title("Тест валидации изображения для Broken Links")
+        def test_valid_image(self, driver):
+            valid_image = requests.get("https://demoqa.com/images/Toolsqa.jpg").content
+
+            broken_links_page = BrokenLinksPage(driver, self.URL)
+            broken_links_page.open_url()
+
+            current_img, element = broken_links_page.get_img()
+            assert hash(current_img) == hash(valid_image), f"Картинка ({element}) не соответствует ожидаемой"
+
+
+
+
 
 

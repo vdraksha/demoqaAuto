@@ -4,7 +4,7 @@ import requests
 from selenium.common import TimeoutException, ElementClickInterceptedException
 from generator.generator import generated_person
 from locators.elements_page_locators import TextBoxPageLocators, CheckBoxPageLocators, RadioButtonPageLocators, \
-    WebTablePageLocators, ButtonsPageLocators, LinksPageLocators
+    WebTablePageLocators, ButtonsPageLocators, LinksPageLocators, BrokenLinksPageLocators
 from pages.base_page import BasePage
 
 
@@ -364,6 +364,21 @@ class LinksPage(BasePage):
             response = requests.get(f"https://demoqa.com/{call_name}")
         return int(response_code), response.status_code
 
+
+class BrokenLinksPage(BasePage):
+    """Хранит действия для страницы https://demoqa.com/broken
+    """
+    locators = BrokenLinksPageLocators()
+
+    @allure.step("Получение изображения и пути к нему")
+    def get_img(self):
+        """Получает путь к изображению.
+        :return: Возвращает байтовое представление, если по полученному пути лежит изображение.
+                 Иначе возвращает содержание ответа.
+                 Возвращает путь до элемента.
+        """
+        element = self.element_is_visible(self.locators.BROKEN_IMG).get_attribute("src")
+        return requests.get(element).content, element
 
 
 
