@@ -1,10 +1,11 @@
+import os.path
 import random
 import allure
 import requests
 from selenium.common import TimeoutException, ElementClickInterceptedException
-from generator.generator import generated_person
+from generator.generator import generated_person, generated_file
 from locators.elements_page_locators import TextBoxPageLocators, CheckBoxPageLocators, RadioButtonPageLocators, \
-    WebTablePageLocators, ButtonsPageLocators, LinksPageLocators, BrokenLinksPageLocators
+    WebTablePageLocators, ButtonsPageLocators, LinksPageLocators, BrokenLinksPageLocators, UpDownloadPageLocators
 from pages.base_page import BasePage
 
 
@@ -381,8 +382,42 @@ class BrokenLinksPage(BasePage):
         return requests.get(element).content, element
 
 
+class UpDownloadPage(BasePage):
+    """Хранить действия для страницы https://demoqa.com/upload-download
+    """
+    locators = UpDownloadPageLocators()
 
+    @allure.step("Нажатие на кнопку 'Download'")
+    def click_download(self):
+        """Нажимает на кнопку 'Download' на странице.
+        """
+        self.element_is_visible(self.locators.DOWNLOAD_BUTTON).click()
 
+    @allure.step("Проверка наличия загруженного файла")
+    def check_download_file(self, path):
+        """Забирает имя файла скачиваемого файла и проверяет его наличие в папке загрузки.
+        :param path: Путь до папки загрузки.
+        :return: Возвращает True, если файл в каталоге. Иначе False.
+        """
+        file = self.element_is_present(self.locators.DOWNLOAD_BUTTON).get_attribute("download")
+        return os.path.exists(path + file)
 
+    @allure.step("Выгрузка файла на сервер")
+    def set_upload_file(self):
+        """Создаёт файл в системе, передает путь до него в input, затем удаляет его из системы.
+        :return: Возвращает имя созданного файла.
+        """
+        path = generated_file()
+        self.element_is_present(self.locators.SELECT_FILE_INPUT).send_keys(path)
+        os.remove(path)
+        return path.split("\\")[-1]
+
+    @allure.step("Получение сведений о файле на сервере")
+    def check_upload_file(self):
+        """Получает путь, по которому был скачан файл.
+        :return: Возвращает имя скачанного файла.
+        """
+        text = self.element_is_present(self.locators.SELECT_FILE_OUTPUT).text
+        return text.split("\\")[-1]
 
 

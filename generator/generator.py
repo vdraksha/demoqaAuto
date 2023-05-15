@@ -22,3 +22,12 @@ def generated_person():
         current_address=faker_ru.address(),
         permanent_address=faker_ru.address(),
     )
+
+
+def generated_file():
+    """Генерирует и возвращает случайный файл.
+    """
+    path = rf"C:\Users\FamilyR\Downloads\testfile{random.randint(0, 999)}.txt"
+    with open(path, "x") as f:
+        f.write(f"Hakuna matata and ${random.randint(1, 99)} in your pocket")
+    return path

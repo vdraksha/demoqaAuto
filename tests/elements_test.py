@@ -4,7 +4,7 @@ import allure
 import requests
 
 from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage, ButtonsPage, LinksPage, \
-    BrokenLinksPage
+    BrokenLinksPage, UpDownloadPage
 
 
 @allure.suite("Elements Page")
@@ -86,7 +86,7 @@ class TestElements:
             output_data = web_table_page.collect_table_data()
             assert input_data in output_data, "Данные в таблице не совпадают с введенными"
 
-        @allure.title('Тест поиска в WebTable')
+        @allure.title('Тест поиска по WebTable')
         def test_web_table_search_person(self, driver):
             web_table_page = WebTablePage(driver, self.URL)
             web_table_page.open_url()
@@ -118,7 +118,7 @@ class TestElements:
             all_data_tabel = web_table_page.collect_table_data(mode='not empty')
             assert key in all_data_tabel[0], f"Строка не была изменена или искомая ячейка '{keyword}' была изменена"
 
-        @allure.title('Тест удаления в WebTable')
+        @allure.title('Тест удаления из WebTable')
         def test_web_table_delete_person(self, driver):
             web_table_page = WebTablePage(driver, self.URL)
             web_table_page.open_url()
@@ -163,7 +163,7 @@ class TestElements:
     class TestButtons:
         URL = "https://demoqa.com/buttons"
 
-        @allure.title("Тест нажатия кнопок для Buttons")
+        @allure.title("Тест нажатия кнопок")
         def test_pressing_buttons(self, driver):
             buttons_page = ButtonsPage(driver, self.URL)
             buttons_page.open_url()
@@ -180,7 +180,7 @@ class TestElements:
     class TestLinks:
         URL = "https://demoqa.com/links"
 
-        @allure.title("Тест работы ссылок 'Home' для Links")
+        @allure.title("Тест работы ссылок 'Home'")
         def test_home_links(self, driver):
             links_page = LinksPage(driver, self.URL)
             links_page.open_url()
@@ -196,7 +196,7 @@ class TestElements:
             assert url == "https://demoqa.com/", "Адрес страницы не совпал с ожидаемым"
             assert flag, "По указанному адресу расположена другая страница"
 
-        @allure.title("Тест работы API-запросов для Links")
+        @allure.title("Тест работы API-запросов")
         def test_api_links(self, driver):
             call_list = ["created", "no-content", "moved",
                          "bad-request", "unauthorized", "forbidden",
@@ -214,7 +214,7 @@ class TestElements:
     class TestBrokenLinks:
         URL = "https://demoqa.com/broken"
 
-        @allure.title("Тест валидации изображения для Broken Links")
+        @allure.title("Тест валидации изображения(ссылки)")
         def test_valid_image(self, driver):
             valid_image = requests.get("https://demoqa.com/images/Toolsqa.jpg").content
 
@@ -224,6 +224,27 @@ class TestElements:
             current_img, element = broken_links_page.get_img()
             assert hash(current_img) == hash(valid_image), f"Картинка ({element}) не соответствует ожидаемой"
 
+    @allure.feature("Upload/Download")
+    class TestUploadDownload:
+        URL = "https://demoqa.com/upload-download"
+
+        @allure.title("Тест загрузки файла")
+        def test_download(self, driver):
+            download_page = UpDownloadPage(driver, self.URL)
+            download_page.open_url()
+
+            download_page.click_download()
+            output_data = download_page.check_download_file("C:/Users/FamilyR/Downloads/")
+            assert output_data, "Скачиваемый файл не найден в каталоге"
+
+        @allure.title("Тест выгрузки файла")
+        def test_upload(self, driver):
+            upload_page = UpDownloadPage(driver, self.URL)
+            upload_page.open_url()
+
+            input_data = upload_page.set_upload_file()
+            output_data = upload_page.check_upload_file()
+            assert input_data == output_data, "Файл загружен не верно или не загружен"
 
 
 

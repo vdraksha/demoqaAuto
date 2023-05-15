@@ -84,3 +84,12 @@ class BrokenLinksPageLocators:
     BROKEN_IMG = (By.CSS_SELECTOR, "div[class='col-12 mt-4 col-md-6'] img:nth-child(6)")
 
 
+class UpDownloadPageLocators:
+    """Хранит локаторы для элементов страницы https://demoqa.com/upload-download
+    """
+    DOWNLOAD_BUTTON = (By.CSS_SELECTOR, "a[id='downloadButton']")
+    SELECT_FILE_INPUT = (By.CSS_SELECTOR, "input[id='uploadFile']")
+    SELECT_FILE_OUTPUT = (By.CSS_SELECTOR, "p[id='uploadedFilePath']")
+
+
+
