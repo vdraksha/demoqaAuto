@@ -1,10 +1,8 @@
-import time
-
 import allure
 import requests
 
 from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage, ButtonsPage, LinksPage, \
-    BrokenLinksPage, UpDownloadPage
+    BrokenLinksPage, UpDownloadPage, DynamicPropertiesPage
 
 
 @allure.suite("Elements Page")
@@ -245,6 +243,52 @@ class TestElements:
             input_data = upload_page.set_upload_file()
             output_data = upload_page.check_upload_file()
             assert input_data == output_data, "Файл загружен не верно или не загружен"
+
+    @allure.feature("Dynamic Properties")
+    class TestDynamicProperties:
+        URL = "https://demoqa.com/dynamic-properties"
+
+        @allure.title("Тест времени активации кнопки")
+        def test_enable_button(self, driver):
+            dynamic_properties_page = DynamicPropertiesPage(driver, self.URL)
+            dynamic_properties_page.open_url()
+
+            timeout = 3
+            time_before = dynamic_properties_page.check_enable_button(timeout)
+            dynamic_properties_page.refresh_page()
+            timeout = 5.5
+            time_after = dynamic_properties_page.check_enable_button(timeout)
+
+            assert time_before is False, "Время активации кнопки меньше 5 секунд"
+            assert time_after is True, "Время активации кнопки больше 5 секунд"
+
+        @allure.title("Тест времени изменения цвета")
+        def test_color_change(self, driver):
+            dynamic_properties_page = DynamicPropertiesPage(driver, self.URL)
+            dynamic_properties_page.open_url()
+
+            timeout = 3
+            color_before = dynamic_properties_page.get_color_button(timeout)
+            timeout = 5.5
+            color_after = dynamic_properties_page.get_color_button(timeout)
+
+            assert color_before == "rgba(255, 255, 255, 1)", "Цвет кнопки не соответствует ожидаемому"
+            assert color_after == "rgba(220, 53, 69, 1)", "Цвет кнопки не соответствует ожидаемому"
+
+        @allure.title("Тест времени появления кнопки")
+        def test_visible_button(self, driver):
+            dynamic_properties_page = DynamicPropertiesPage(driver, self.URL)
+            dynamic_properties_page.open_url()
+
+            timeout = 3
+            time_before = dynamic_properties_page.check_visible_button(timeout)
+            dynamic_properties_page.refresh_page()
+            timeout = 5.5
+            time_after = dynamic_properties_page.check_visible_button(timeout)
+
+            assert time_before is False, "Время активации кнопки меньше 5 секунд"
+            assert time_after is True, "Время активации кнопки больше 5 секунд"
+
 
 
 

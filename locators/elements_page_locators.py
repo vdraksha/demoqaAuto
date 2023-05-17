@@ -92,4 +92,12 @@ class UpDownloadPageLocators:
     SELECT_FILE_OUTPUT = (By.CSS_SELECTOR, "p[id='uploadedFilePath']")
 
 
+class DynamicPropertiesPageLocator:
+    """Хранит локаторы для элементов страницы https://demoqa.com/dynamic-properties
+    """
+    ENABLE_AFTER_BUTTON = (By.CSS_SELECTOR, "button[id='enableAfter']")
+    COLOR_CHANGE_BUTTON = (By.CSS_SELECTOR, "button[id='colorChange']")
+    VISIBLE_AFTER_BUTTON = (By.CSS_SELECTOR, "button[id='visibleAfter']")
+
+
 
