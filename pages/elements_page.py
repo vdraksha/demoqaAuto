@@ -5,7 +5,8 @@ import requests
 from selenium.common import TimeoutException, ElementClickInterceptedException
 from generator.generator import generated_person, generated_file
 from locators.elements_page_locators import TextBoxPageLocators, CheckBoxPageLocators, RadioButtonPageLocators, \
-    WebTablePageLocators, ButtonsPageLocators, LinksPageLocators, BrokenLinksPageLocators, UpDownloadPageLocators
+    WebTablePageLocators, ButtonsPageLocators, LinksPageLocators, BrokenLinksPageLocators, UpDownloadPageLocators, \
+    DynamicPropertiesPageLocator
 from pages.base_page import BasePage
 
 
@@ -419,5 +420,46 @@ class UpDownloadPage(BasePage):
         """
         text = self.element_is_present(self.locators.SELECT_FILE_OUTPUT).text
         return text.split("\\")[-1]
+
+
+class DynamicPropertiesPage(BasePage):
+    """Хранить действия для страницы https://demoqa.com/dynamic-properties
+    """
+    locators = DynamicPropertiesPageLocator()
+
+    @allure.step("Получение состояния кнопки")
+    def check_enable_button(self, timeout):
+        """Ожидает указанное время возможности нажать на кнопку.
+        :param timeout: Время ожидания.
+        :return: Возвращает True, если на кнопку можно нажать. Иначе False.
+        """
+        try:
+            self.element_is_clickable(self.locators.ENABLE_AFTER_BUTTON, timeout)
+        except TimeoutException:
+            return False
+        return True
+
+    @allure.step("Получение цвета текста кнопки")
+    def get_color_button(self, timeout):
+        """Получает текст цвета кнопки.
+        :param timeout: Время ожидания перед получением цвета.
+        :return: Возвращает цвет в формате rgba(0, 0, 0, 0)
+        """
+        self.driver.implicitly_wait(timeout)
+        button = self.element_is_visible(self.locators.COLOR_CHANGE_BUTTON, 0.01)
+        return button.value_of_css_property("color")
+
+    @allure.step("Получение состояния кнопки")
+    def check_visible_button(self, timeout):
+        """Ожидает указанное время появление кнопки.
+        :param timeout: Время ожидания.
+        :return: Возвращает True, если кнопка появилась. Иначе False.
+        """
+        try:
+            self.element_is_visible(self.locators.VISIBLE_AFTER_BUTTON, timeout)
+        except TimeoutException:
+            return False
+        return True
+
 
 
